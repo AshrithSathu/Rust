@@ -7,9 +7,12 @@ name = "Rust"
 version = "0.1.0"
 
 [[package]]
-name = "hello_world"
+name = "auth"
 version = "0.1.0"
 
 [[package]]
-name = "variables"
+name = "login"
 version = "0.1.0"
+dependencies = [
+ "auth",
+]
