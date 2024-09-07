@@ -1,55 +1,40 @@
-use auth::{login, read_line};
+use auth::login;
 use std::io::{self, Write}; // Import io for writing
 
 fn main() {
-    // println!("Hello, world!");
-    // println!("Please login\n");
-
-    // print!("Username: ");
-    // io::stdout().flush().unwrap(); // Ensure "Username" is printed before taking input
-    // let mut username = String::new();
-    // io::stdin().read_line(&mut username).expect("Failed to read username");
-    // let username = read_line(&username); // Trim the input using the `read_line` function
-
-    // print!("Password: ");
-    // io::stdout().flush().unwrap(); // Ensure "Password" is printed before taking input
-    // let mut password = String::new();
-    // io::stdin().read_line(&mut password).expect("Failed to read password");
-    // let password = read_line(&password); // Trim the input using the `read_line` function
-
-    // if login(&username, &password) {
-    //     println!("Login successful!");
-    // } else {
-    //     println!("Login failed!");
-    // }
     let mut tries = 0;
     let max_tries = 3;
 
     while tries < max_tries {
         println!("Please login\n");
 
+        // Prompt for Username
         print!("Username: ");
         io::stdout().flush().unwrap(); // Ensure "Username" is printed before taking input
         let mut username = String::new();
         io::stdin().read_line(&mut username).expect("Failed to read username");
-        let username = read_line(&username); // Trim the input using the `read_line` function
+        let username = username.trim(); // Trim the input to remove newlines and spaces
 
+        // Prompt for Password
         print!("Password: ");
         io::stdout().flush().unwrap(); // Ensure "Password" is printed before taking input
         let mut password = String::new();
         io::stdin().read_line(&mut password).expect("Failed to read password");
-        let password = read_line(&password); // Trim the input using the `read_line` function
+        let password = password.trim(); // Trim the input to remove newlines and spaces
 
-        if login(&username, &password) {
-            println!("Login successful!");
-            break;
-        } else {
-            println!("Login failed!");
-            tries += 1;
-            if tries < max_tries {
-                println!("Please try again\n");
-            } else {
-                println!("Max login attempts reached");
+        // Call the login function
+        match login(username, password) {
+            auth::LoginAction::Admin => {
+                println!("Welcome Admin!");
+                break;
+            }
+            auth::LoginAction::User => {
+                println!("Welcome User!");
+                break;
+            }
+            auth::LoginAction::Denied => {
+                println!("Invalid username or password. Please try again.");
+                tries += 1;
             }
         }
     }
